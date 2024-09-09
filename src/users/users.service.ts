@@ -1,23 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-    constructor(
-        @InjectRepository(User)
-        private usersRepository: Repository<User>,
-    ) {}
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
 
-    async create(username: string, password: string, role: 'client' | 'provider'): Promise<User> {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = this.usersRepository.create({ username, password: hashedPassword, role });
-        return this.usersRepository.save(user);
-    }
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const user = this.userRepository.create(createUserDto);
+    return this.userRepository.save(user);
+  }
+  
+  async findByUsername(username: string): Promise<User | undefined> {
+    return this.userRepository.findOne({ where: { username } });
+  }
 
-    async findOne(username: string): Promise<User | undefined> {
-        return this.usersRepository.findOne({ where: { username } });
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find();
+  }
+
+  async findOne(id: number): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
+    return user;
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.findOne(id);
+    Object.assign(user, updateUserDto);
+    return this.userRepository.save(user);
+  }
+
+  async remove(id: number): Promise<void> {
+    const user = await this.findOne(id);
+    await this.userRepository.remove(user);
+  }
 }

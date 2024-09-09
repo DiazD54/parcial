@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Organ {
@@ -11,9 +12,9 @@ export class Organ {
     @Column()
     status: string;
 
-    @Column()
-    donorId: number;
+    @ManyToOne(() => User, (user) => user.donatedOrgans)
+    donor: User;
 
-    @Column()
-    clientId: number;
+    @ManyToOne(() => User, (user) => user.receivedOrgans)
+    client: User;
 }
