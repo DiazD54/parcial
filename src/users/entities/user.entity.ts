@@ -24,4 +24,5 @@ export class User {
 
   @OneToMany(() => Organ, (organ) => organ.client)
   purchasedOrgans: Organ[];
+  receivedOrgans: any;
 }

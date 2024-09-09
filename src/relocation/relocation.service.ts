@@ -13,6 +13,7 @@ export class RelocationService {
       id: this.relocations.length + 1,
       dateRequested: new Date(),
       status: 'pending',
+      user: null, // Assign the user appropriately
     };
     this.relocations.push(newRelocation);
     return newRelocation;

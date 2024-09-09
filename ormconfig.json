@@ -1,0 +1,13 @@
+{
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "postgres",
+    "password": "dollarfen54",
+    "database": "parcialweb",
+    "entities": ["src/**/*.entity{.ts,.js}"],
+    "migrations": ["src/migration/**/*.ts"],
+    "cli": {
+    "migrationsDir": "src/migration"
+    }
+}

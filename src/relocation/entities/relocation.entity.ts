@@ -1,10 +1,27 @@
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '../../users/entities/user.entity';
+
+@Entity()
 export class Relocation {
+    @PrimaryGeneratedColumn()
     id: number;
-    clientId: number;
-    country: string;
-    riskLevel: string; // Baja, Media, Alta
-    details: string; // Descripción de los riesgos
+
+    @Column()
+    location: string;
+
+    @Column()
+    risks: string;
+
+    @ManyToOne(() => User, (user) => user.relocations)
+    user: User;
+
+    @Column()
     dateRequested: Date;
-    status: string; // "pending", "approved", "rejected"
+
+    @Column()
+    status: string;
+
+    @Column()
+    clientId: number;
+
 }
-  

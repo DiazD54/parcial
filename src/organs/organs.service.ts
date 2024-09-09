@@ -10,8 +10,8 @@ import { UsersService } from '../users/users.service';
 export class OrgansService {
     constructor(
         @InjectRepository(Organ)
-        private organsRepository: Repository<Organ>,
-        private usersService: UsersService,
+        private readonly organsRepository: Repository<Organ>,
+        private readonly usersService: UsersService,
     ) {}
 
     async create(createOrganDto: CreateOrganDto): Promise<Organ> {
